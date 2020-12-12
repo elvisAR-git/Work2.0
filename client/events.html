@@ -86,28 +86,31 @@
       </thead>
       <tbody></tbody>
     </table>
+    <hr>
+    <span class="small caption" id="count"></span>
   </div>
   <script type="text/javascript">
     // TODO: Fetch events.json data from the server and display it in the envetsTable
     $(document).ready(function () {
+      var n = 0
       $.getJSON("/events.json", function (data) {
         var events_info = "";
-        console.log(data);
         $.each(data, function (key, value) {
           events_info += "<tr>";
           events_info += "<td>" + value.event_day + "</td>";
           events_info += "<td>" + value.event_event + "</td>";
-          events_info += "<td>" + value.event_start + "</td>";
+          events_info += "<td>" + value.event_start + " - " + value.event_end + "</td>";
           events_info += "<td>" + value.event_location + "</td>";
 
           events_info += "<td>" + value.event_phone + "</td>";
           events_info += '<td> <a href="' + value.event_url +
-            '">' +
-            value.event_info +
-            " </a> </td>";
+            '">' + value.event_info + " </a> </td>";
           events_info += "</tr>";
+          n += 1
         });
         $("#eventsTable").append(events_info);
+        document.getElementById("count").textContent = `Showing ${n} of ${n} records`
+        console.log(document.getElementById("count"))
       });
     });
   </script>
