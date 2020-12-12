@@ -7,11 +7,7 @@ const DB = require("./DatabaseService.js")
 const MediaRender = require("./MediaRender.js")
 let MyDB
 
-DB.connect("Events").then((database) => {
-  MyDB = database
-}).catch((err) => {
-  console.log("Could not connect to Database: ", err)
-})
+
 // create an express application
 var app = express();
 
@@ -56,6 +52,11 @@ let parse = parseString(data, (err, res) => {
   PORT = res.dbconfig.port[0]
 })
 
+DB.connect(DATABASE).then((database) => {
+  MyDB = database
+}).catch((err) => {
+  console.log("Could not connect to Database: ", err)
+})
 // use express-session
 // in mremory session is sufficient for this assignment
 app.use(session({
