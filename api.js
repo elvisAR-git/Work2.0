@@ -6,11 +6,7 @@ var fs = require('fs')
 
 let MyDB
 
-DB.connect("Events").then((database) => {
-    MyDB = database
-}).catch((err) => {
-    console.log("Could not connect to Database: ", err)
-})
+
 
 const parseString = require('xml2js').parseString
 
@@ -33,7 +29,11 @@ let parse = parseString(data, (err, res) => {
     PORT = res.dbconfig.port[0]
 })
 
-
+DB.connect(DATABASE).then((database) => {
+    MyDB = database
+}).catch((err) => {
+    console.log("Could not connect to Database: ", err)
+})
 
 router.get("/getListOfUsers", (req, res) => {
     DB.fetch(MyDB, "tbl_accounts", 0).then(data => {
