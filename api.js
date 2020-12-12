@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const DB = require("./DatabaseService.js")
 var crypto = require('crypto')
+var fs = require('fs')
 
 let MyDB
 
@@ -10,6 +11,28 @@ DB.connect("Events").then((database) => {
 }).catch((err) => {
     console.log("Could not connect to Database: ", err)
 })
+
+const parseString = require('xml2js').parseString
+
+
+var HOST
+var USER
+var PASSWORD_TXT
+var DATABASE
+var PORT
+
+let data = fs.readFileSync("dbconfig.xml")
+data = data.toLocaleString()
+
+let parse = parseString(data, (err, res) => {
+    if (err) console.log(err)
+    HOST = res.dbconfig.host[0]
+    USER = res.dbconfig.user[0]
+    PASSWORD_TXT = res.dbconfig.password[0]
+    DATABASE = res.dbconfig.database[0]
+    PORT = res.dbconfig.port[0]
+})
+
 
 
 router.get("/getListOfUsers", (req, res) => {
